@@ -1,0 +1,87 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Copy and paste the URL to the page on le.utah.gov that has the bills for the current legislative session. When you run the chunk, it will open a webdev window to the page with all the bills for the session. Click on each of the small + icons to open the "containers" on the page. This step is important because the rest of the code relies on those containers being opened. Keep that window open. 
+```{r}
+library(rvest, Chromote, openxlsx)
+
+Bills <- read_html_live("https://le.utah.gov/DynaBill/BillList?session=2024GS")
+Bills$view()
+```
+
+```{r}
+#
+column1 <- Bills %>% html_elements(" dt") %>%
+  html_text()
+#
+column2.1 <- "https://le.utah.gov/"
+#
+column2.2 <- Bills %>% html_elements(".nlink") %>%
+  html_attr("href")
+#
+column2 <- paste0(column2.1,column2.2)
+#
+column3 <- Bills %>% html_elements("em") %>% 
+    html_text()
+# Create a data frame
+df <- data.frame(Column1 = column1, Column2 = column2, Column3 = column3)
+# Print the data frame
+print(df)
+```
+
+```{r}
+openxlsx::write.xlsx(df,"Bills.xlsx")
+```
+
+#script to click selectors
+#H.B. 1-49
+Bills$click("#g1 > ul > li:nth-child(1) > a")
+#H.B. 50-99
+Bills$click("#g1 > ul > li:nth-child(2) > a")
+#H.B. 100-149
+Bills$click("#g1 > ul > li:nth-child(3) > a")
+#H.B. 150-199
+Bills$click("#g1 > ul > li:nth-child(4) > a")
+#H.B. 200-249
+Bills$click("#g1 > ul > li:nth-child(5) > a")
+#H.B. 250-299
+Bills$click("#g1 > ul > li:nth-child(6) > a")
+#H.B. 300-349
+Bills$click("#g1 > ul > li:nth-child(7) > a")
+#H.B. 350-399
+Bills$click("#g1 > ul > li:nth-child(8) > a")
+#H.B. 400-449
+Bills$click("#g1 > ul > li:nth-child(9) > a")
+#H.B. 450-499
+Bills$click("#g1 > ul > li:nth-child(10) > a")
+#H.B. 500-549
+Bills$click("#g1 > ul > li:nth-child(11) > a")
+#H.B. 550-599
+Bills$click("#g1 > ul > li:nth-child(12) > a")
+#H.C.R. 1-49 
+Bills$click("#g2 > ul > li > a")
+#H.J.R. 1-49
+Bills$click("#g3 > ul > li > a")
+#H.R. 1-49
+Bills$click("#g4 > ul > li > a")
+#S.B. 1-49
+Bills$click("#g5 > ul > li:nth-child(1) > a")
+#S.B. 50-99
+Bills$click("#g5 > ul > li:nth-child(2) > a")
+#S.B. 100-149
+Bills$click("#g5 > ul > li:nth-child(3) > a")
+#S.B. 150-199
+Bills$click("#g5 > ul > li:nth-child(4) > a")
+#S.B. 200-249
+Bills$click("#g5 > ul > li:nth-child(5) > a")
+#S.B. 250-299
+Bills$click("#g5 > ul > li:nth-child(6) > a")
+#S.C.R. 1-49
+Bills$click("#g6 > ul > li > a")
+#S.J.R. 1-49
+Bills$click("#g7 > ul > li > a")
+#S.R. 1-49
+Bills$click("#g8 > ul > li > a")
+```
